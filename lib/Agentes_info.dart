@@ -171,7 +171,7 @@ final Habilidad xPhoenix = new Habilidad(
 final Agente phoenix = new Agente(
   "PHOENIX",
   "Phoenix proviene del Reino Unido y sus poderes estelares salen a relucir con su estilo de combate, que prende fuego al campo de batalla de forma deslumbrante. No le hacen falta refuerzos; es él quién se lanza al combate y marca el ritmo.",
-  "Duelista",
+  "DUELISTA",
   "assets/agentes/Phoenix/Phoenix.gif",
   "06",
   [qPhoenix, ePhoenix, cPhoenix, xPhoenix],

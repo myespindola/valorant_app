@@ -26,7 +26,23 @@ class Agentes extends StatefulWidget {
 }
 
 class _AgentesState extends State<Agentes> {
-  Agente agenteActual = jett;
+  Agente agenteActual;
+  int indexHabilidadActual = 0;
+  Habilidad habilidadActual;
+  List<bool> isSelected = List.generate(4, (index) {
+    if (index == 0) {
+      return true;
+    } else {
+      return false;
+    }
+  });
+  _AgentesState() {
+    agenteActual = jett;
+    habilidadActual = agenteActual.habilidades[indexHabilidadActual];
+    print(agenteActual.nombre);
+    print(habilidadActual.nombre);
+  }
+
   @override
   Widget build(BuildContext context) {
     return Stack(
@@ -52,36 +68,169 @@ class _AgentesState extends State<Agentes> {
                     Container(
                       height: 350,
                     ),
-                    Center(
-                      child: Container(
-                          child: Column(
-                        children: <Widget>[
-                          CarouselSlider(
-                            options: CarouselOptions(
-                              autoPlay: false,
-                              aspectRatio: 2.0,
-                              viewportFraction: 0.4,
-                              enlargeCenterPage: false,
-                              disableCenter: false,
-                              onPageChanged: scroll,
-                            ),
-                            items: imageSliders,
-                          ),
-                        ],
-                      )),
+                    Container(
+                      //height: 150,
+                      child: CarouselSlider(
+                        options: CarouselOptions(
+                          autoPlay: false,
+                          aspectRatio: 2.5,
+                          viewportFraction: 0.4,
+                          enlargeCenterPage: false,
+                          disableCenter: false,
+                          onPageChanged: scroll,
+                        ),
+                        items: imageSliders,
+                      ),
                     ),
                   ],
                 ),
               ],
             ),
             Container(
-              padding: EdgeInsets.only(left: 20),
+              margin: EdgeInsets.only(left: 30),
               child: Text(
                 "//Rol",
                 style: GoogleFonts.gugi(
                   fontSize: 20,
                   color: Colors.black,
                 ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 30, top: 10),
+              child: Row(
+                children: [
+                  Text(
+                    agenteActual.rol,
+                    style: GoogleFonts.anton(
+                      fontSize: 40,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Container(
+                      margin: EdgeInsets.only(left: 20),
+                      child: Image.asset(
+                        'assets/roles/${agenteActual.rol}.png',
+                        fit: BoxFit.cover,
+                      ),
+                      height: 40)
+                ],
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 30, top: 30),
+              child: Text(
+                "//Biografia",
+                style: GoogleFonts.gugi(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 30, top: 20, right: 30),
+              child: Text(
+                agenteActual.descripcion,
+                style: GoogleFonts.gugi(
+                  fontSize: 15,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(left: 30, top: 30),
+              child: Text(
+                "HABILIDADES ESPECIALES",
+                style: GoogleFonts.anton(
+                  fontSize: 30,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Container(
+              margin: EdgeInsets.only(top: 20),
+              child: Stack(
+                children: [
+                  Container(
+                    margin: EdgeInsets.only(top: 35),
+                    child: Container(
+                      height: 1.0,
+                      color: Colors.black,
+                    ),
+                  ),
+                  Center(
+                    child: Container(
+                      decoration: BoxDecoration(
+                        color: Color.fromRGBO(236, 232, 225, 1),
+                      ),
+                      child: ToggleButtons(
+                        children: <Widget>[
+                          Container(
+                            height: 70,
+                            width: 70,
+                            child: Center(
+                              child: Text(
+                                "Q",
+                                style: GoogleFonts.gugi(fontSize: 30),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 70,
+                            width: 70,
+                            child: Center(
+                              child: Text(
+                                "E",
+                                style: GoogleFonts.gugi(fontSize: 30),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 70,
+                            width: 70,
+                            child: Center(
+                              child: Text(
+                                "C",
+                                style: GoogleFonts.gugi(fontSize: 30),
+                              ),
+                            ),
+                          ),
+                          Container(
+                            height: 70,
+                            width: 70,
+                            child: Center(
+                              child: Text(
+                                "X",
+                                style: GoogleFonts.gugi(fontSize: 30),
+                              ),
+                            ),
+                          ),
+                        ],
+                        fillColor: Color.fromRGBO(0, 0, 0, 0.0),
+                        selectedColor: Colors.red,
+                        selectedBorderColor: Colors.red,
+                        onPressed: (int index) {
+                          setState(() {
+                            for (int buttonIndex = 0;
+                                buttonIndex < isSelected.length;
+                                buttonIndex++) {
+                              if (buttonIndex == index) {
+                                isSelected[buttonIndex] = true;
+                              } else {
+                                isSelected[buttonIndex] = false;
+                              }
+                            }
+                            indexHabilidadActual = index;
+                            habilidadActual =
+                                agenteActual.habilidades[indexHabilidadActual];
+                            print(habilidadActual.nombre);
+                          });
+                        },
+                        isSelected: isSelected,
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
@@ -124,7 +273,9 @@ class _AgentesState extends State<Agentes> {
   scroll(int index, CarouselPageChangedReason reason) {
     setState(() {
       agenteActual = agentes[index];
+      habilidadActual = agenteActual.habilidades[indexHabilidadActual];
       print(agenteActual.nombre);
+      print(habilidadActual.nombre);
     });
   }
 }
