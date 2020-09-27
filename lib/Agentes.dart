@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'Agente.dart';
 import 'Agentes_info.dart';
+import 'package:video_player/video_player.dart';
+
 import 'package:carousel_slider/carousel_options.dart';
 import 'package:carousel_slider/carousel_slider.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -26,6 +28,25 @@ class Agentes extends StatefulWidget {
 }
 
 class _AgentesState extends State<Agentes> {
+  VideoPlayerController _controller;
+
+  void initState() {
+    super.initState();
+    _controller = VideoPlayerController.network(habilidadActual.video)
+      ..initialize().then((_) {
+        _controller.setLooping(true);
+        _controller.setVolume(0);
+        _controller.play();
+        setState(() {});
+      });
+  }
+
+  @override
+  void dispose() {
+    _controller.dispose();
+    super.dispose();
+  }
+
   Agente agenteActual;
   int indexHabilidadActual = 0;
   Habilidad habilidadActual;
@@ -128,6 +149,7 @@ class _AgentesState extends State<Agentes> {
               ),
             ),
             Container(
+              height: 150,
               margin: EdgeInsets.only(left: 30, top: 20, right: 30),
               child: Text(
                 agenteActual.descripcion,
@@ -224,6 +246,14 @@ class _AgentesState extends State<Agentes> {
                             habilidadActual =
                                 agenteActual.habilidades[indexHabilidadActual];
                             print(habilidadActual.nombre);
+                            _controller = VideoPlayerController.network(
+                                habilidadActual.video)
+                              ..initialize().then((_) {
+                                _controller.setLooping(true);
+                                _controller.setVolume(0);
+                                _controller.play();
+                                setState(() {});
+                              });
                           });
                         },
                         isSelected: isSelected,
@@ -233,6 +263,41 @@ class _AgentesState extends State<Agentes> {
                 ],
               ),
             ),
+            Container(
+              margin: EdgeInsets.only(left: 30, top: 30),
+              child: Text(
+                habilidadActual.nombre,
+                style: GoogleFonts.gugi(
+                  fontSize: 20,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Container(
+              height: 180,
+              margin: EdgeInsets.only(left: 30, top: 20, right: 30),
+              child: Text(
+                habilidadActual.descripcion,
+                style: GoogleFonts.gugi(
+                  fontSize: 15,
+                  color: Colors.black,
+                ),
+              ),
+            ),
+            Container(
+              height: 200,
+              child: Center(
+                child: _controller.value.initialized
+                    ? AspectRatio(
+                        aspectRatio: _controller.value.aspectRatio,
+                        child: VideoPlayer(_controller),
+                      )
+                    : Container(),
+              ),
+            ),
+            Container(
+              height: 50,
+            )
           ],
         ),
       ],
@@ -274,6 +339,13 @@ class _AgentesState extends State<Agentes> {
     setState(() {
       agenteActual = agentes[index];
       habilidadActual = agenteActual.habilidades[indexHabilidadActual];
+      _controller = VideoPlayerController.network(habilidadActual.video)
+        ..initialize().then((_) {
+          _controller.setLooping(true);
+          _controller.setVolume(0);
+          _controller.play();
+          setState(() {});
+        });
       print(agenteActual.nombre);
       print(habilidadActual.nombre);
     });
