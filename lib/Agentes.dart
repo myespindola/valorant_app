@@ -99,7 +99,7 @@ class _AgentesState extends State<Agentes> {
                         options: CarouselOptions(
                           initialPage: indexAgenteActual,
                           autoPlay: false,
-                          aspectRatio: 2.5,
+                          aspectRatio: 4,
                           viewportFraction: 0.4,
                           enlargeCenterPage: false,
                           disableCenter: false,
@@ -280,7 +280,7 @@ class _AgentesState extends State<Agentes> {
               ),
             ),
             Container(
-              height: 180,
+              height: 250,
               margin: EdgeInsets.only(left: 30, top: 20, right: 30),
               child: Text(
                 habilidadActual.descripcion,
