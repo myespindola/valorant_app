@@ -292,7 +292,9 @@ class _AgentesState extends State<Agentes> {
                         aspectRatio: _controller.value.aspectRatio,
                         child: VideoPlayer(_controller),
                       )
-                    : Container(),
+                    : Container(
+                        child: CircularProgressIndicator(),
+                      ),
               ),
             ),
             Container(
