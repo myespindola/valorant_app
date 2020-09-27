@@ -21,6 +21,7 @@ List<Agente> agentes = [
   reyna,
   killjoy,
 ];
+double ancho = 360;
 
 class Agentes extends StatefulWidget {
   @override
@@ -34,10 +35,11 @@ class _AgentesState extends State<Agentes> {
     super.initState();
     _controller = VideoPlayerController.network(habilidadActual.video)
       ..initialize().then((_) {
-        _controller.setLooping(true);
-        _controller.setVolume(0);
-        _controller.play();
-        setState(() {});
+        setState(() {
+          _controller.setLooping(true);
+          _controller.setVolume(0);
+          _controller.play();
+        });
       });
   }
 
@@ -47,6 +49,7 @@ class _AgentesState extends State<Agentes> {
     super.dispose();
   }
 
+  int indexAgenteActual = 0;
   Agente agenteActual;
   int indexHabilidadActual = 0;
   Habilidad habilidadActual;
@@ -66,6 +69,7 @@ class _AgentesState extends State<Agentes> {
 
   @override
   Widget build(BuildContext context) {
+    ancho = MediaQuery.of(context).size.width;
     return Stack(
       children: [
         Container(
@@ -90,9 +94,10 @@ class _AgentesState extends State<Agentes> {
                       height: 350,
                     ),
                     Container(
-                      //height: 150,
+                      height: 170,
                       child: CarouselSlider(
                         options: CarouselOptions(
+                          initialPage: indexAgenteActual,
                           autoPlay: false,
                           aspectRatio: 2.5,
                           viewportFraction: 0.4,
@@ -249,10 +254,11 @@ class _AgentesState extends State<Agentes> {
                             _controller = VideoPlayerController.network(
                                 habilidadActual.video)
                               ..initialize().then((_) {
-                                _controller.setLooping(true);
-                                _controller.setVolume(0);
-                                _controller.play();
-                                setState(() {});
+                                setState(() {
+                                  _controller.setLooping(true);
+                                  _controller.setVolume(0);
+                                  _controller.play();
+                                });
                               });
                           });
                         },
@@ -321,7 +327,7 @@ class _AgentesState extends State<Agentes> {
                 Text(
                   item.nombre,
                   style: GoogleFonts.anton(
-                    fontSize: 35,
+                    fontSize: ancho / 11,
                     color: Colors.white,
                   ),
                 ),
@@ -339,14 +345,16 @@ class _AgentesState extends State<Agentes> {
 
   scroll(int index, CarouselPageChangedReason reason) {
     setState(() {
-      agenteActual = agentes[index];
+      indexAgenteActual = index;
+      agenteActual = agentes[indexAgenteActual];
       habilidadActual = agenteActual.habilidades[indexHabilidadActual];
       _controller = VideoPlayerController.network(habilidadActual.video)
         ..initialize().then((_) {
-          _controller.setLooping(true);
-          _controller.setVolume(0);
-          _controller.play();
-          setState(() {});
+          setState(() {
+            _controller.setLooping(true);
+            _controller.setVolume(0);
+            _controller.play();
+          });
         });
       print(agenteActual.nombre);
       print(habilidadActual.nombre);
